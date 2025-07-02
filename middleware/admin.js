@@ -3,15 +3,16 @@ const {JWT_ADMIN_Secret} = require("../config")
 
 function adminMiddleWare(req, res, next) {
     const token = req.headers.token;
-    const decode = jwt.verify(token, JWT_ADMIN_Secret);
 
-    if(decode){
+    try {
+        const decode = jwt.verify(token, JWT_ADMIN_Secret);
         req.adminId = decode.adminId;
-        next()
-    }else{
-        res.status(401).send({
-            message: "You are not signId in"
-        })
+        next();
+    } catch (err) {
+        return res.status(401).send({
+            message: "You are not signed in",
+            error: err.message
+        });
     }
 }
 

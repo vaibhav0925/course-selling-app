@@ -58,9 +58,9 @@ adminRouter.post("/signin", async function(req, res) {
             email: email,
         })
         
-        console.log('Hi there 01')
-        const matchPassword = await bcrypt.compare(password, user.password)
-        console.log("Hi there 02")
+        //console.log('Hi there 01')
+        const matchPassword = await bcrypt.compare(password, user.password);
+        // console.log("Hi there 02")
 
         if(matchPassword) {
             const token = jwt.sign({
@@ -69,10 +69,6 @@ adminRouter.post("/signin", async function(req, res) {
             res.json({
                 token: token
             });
-        }else{
-            res.json({
-                error: "Invalid Credentials"
-            })
         }
     }catch(err){
         console.error("Sign In error: ", err)
@@ -86,15 +82,13 @@ adminRouter.post("/signin", async function(req, res) {
 adminRouter.post("/createcourse", adminMiddleWare, async function(req, res) {
     const adminId = req.adminId;
 
-    const { tittle, description, imageUrl, price} = req.body;
+    const { tittle, discription, ImageUrl, price} = req.body;
 
     try{
         const course = await courseModel.create({
-
-        },
-        {tittle: tittle,
-        description: description,
-        imageUrl: imageUrl,
+        tittle: tittle,
+        discription: discription,
+        ImageUrl: ImageUrl,
         price: price,
         creatorId: adminId
         })
@@ -116,7 +110,7 @@ adminRouter.post("/createcourse", adminMiddleWare, async function(req, res) {
 adminRouter.put("/update", adminMiddleWare, async function(req, res) {
     const adminId = req.body;
 
-    const {tittle, description, imageUrl, price, courseId } = req.body;
+    const {tittle, description, ImageUrl, price, courseId } = req.body;
 
     const course  = await courseModel.updateOne({
         _id: courseId,
@@ -125,7 +119,7 @@ adminRouter.put("/update", adminMiddleWare, async function(req, res) {
     },{
         tittle: tittle,
         description: description,
-        imageUrl: imageUrl,
+        ImageUrl: ImageUrl,
         price: price, 
     });
 
