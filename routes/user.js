@@ -1,10 +1,11 @@
 const { Router } = require("express");
 const userRouter = Router();
-const { userModel } = require("../db");
+const { userModel, purchaseModel } = require("../db");
 const {z} = require("zod");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const {JWT_USER_Secret} = require("../config")
+const {JWT_USER_Secret} = require("../config");
+const course = require("./course");
 
 
 
@@ -91,8 +92,17 @@ userRouter.post("/signin", async function(req, res) {
     
 });
 
-userRouter.get("/purchased", function(req, res) {
+userRouter.get("/purchased", async function(req, res) {
+    const userId = req.userId;
 
+    // Ideally it should check weather payment has done by user or not
+    const purchases = await purchaseModel.find({
+        userId
+    });
+
+    res.send({
+        purchases
+    })
 });
 
 

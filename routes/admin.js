@@ -142,8 +142,34 @@ adminRouter.get("/allcreatedcourses", adminMiddleWare, async function(req, res) 
     })
 })
 
-adminRouter.delete("/delete", adminMiddleWare, function(req, res) {
+adminRouter.delete("/delete", adminMiddleWare, async function(req, res) {
+    const adminId = req.adminId;
 
+    const { courseId } =req.body;
+
+    try{
+        const result = await courseModel.deleteOne({
+        _id: courseId,
+        creatorId: adminId
+        });
+
+        if(result.deletedCount === 0){
+            return res.status(404).send({
+                message: "Course not found or you are unauthrised to delete the course"
+            })
+        }
+
+        res.json({
+            message: "Course deleted succesfully",
+            courseId: courseId
+        });
+    }catch(err){
+        console.error(`Delete err `, err);
+            res.status(500).send({
+                message: "Internal server error"
+        })
+    }
+    
 });
 
 module.exports = {
