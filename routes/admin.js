@@ -108,7 +108,7 @@ adminRouter.post("/createcourse", adminMiddleWare, async function(req, res) {
 
 
 adminRouter.put("/update", adminMiddleWare, async function(req, res) {
-    const adminId = req.body;
+    const adminId = req.adminId;
 
     const {tittle, description, ImageUrl, price, courseId } = req.body;
 
@@ -125,7 +125,7 @@ adminRouter.put("/update", adminMiddleWare, async function(req, res) {
 
     res.json({
         message: "Course Updated",
-        courseId: course._id
+        courseId: courseId
     })
 });
 
@@ -137,7 +137,8 @@ adminRouter.get("/allcreatedcourses", adminMiddleWare, async function(req, res) 
     })
 
     res.json({
-        message: "ALL individuls courses created by creators"
+        message: "ALL individuls courses created by creators",
+        courses
     })
 })
 
